@@ -14,17 +14,12 @@ void delete(ptr *,int);
 void printList(ptr);
 void freeList(ptr *);
 
-#define x 3
-
 int main()
 {
 	ptr head=NULL;
 	int num;
 	while(scanf("%d",&num)==1)
 		addToList(&head,num);
-	printList(head);
-	delete(&head,x);
-	printf("after deleting %d\n", x);
 	printList(head);
 	freeList(&head);
 return 0;
@@ -117,7 +112,7 @@ void delete(ptr *h,int n)
 	else
 	{
 		p1=*h;
-		while((p1)&&((p1->key)!=n))
+		while((p1)&&((p1->key)!=n))/*find the key in the list */
 		{
 			p2=p1;
 			p1=p1->next;
