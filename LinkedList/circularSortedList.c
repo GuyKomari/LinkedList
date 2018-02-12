@@ -13,7 +13,7 @@ void printList(ptr);
 void delete(ptr *,ptr*,int);
 void freeList(ptr *);
 
-#define x 3
+unsigned int count = 0;
 int main()
 {
 	ptr head=NULL;
@@ -21,9 +21,6 @@ int main()
 	int num;
 	while(scanf("%d",&num)==1)
 		addToList(&head,&tail,num);
-	printList(head);
-	delete(&head,&tail,x);
-	printf("after deleting %d\n", x);
 	printList(head);
 	freeList(&head);
 	return 0;
@@ -45,11 +42,12 @@ void printList(ptr h)
 void freeList(ptr *h)
 {
 	ptr temp;
-	while(*h)
+	while(count>0)
 	{
 		temp=*h;
 		*h=(*h)->next;
 		free(temp);
+		count--;
 	}
 }
 
@@ -62,6 +60,7 @@ void addToList(ptr * h,ptr * tail,int n)
 		exit(0);
 	}
 	new->key=n;
+	count++;
 	if((*h)==NULL)/*case - empty list*/
 	{
 		*h=new;
@@ -104,11 +103,11 @@ void delete(ptr *h,ptr *tail, int n)
 	if((*h)==NULL)/*case - empty list*/
 		return;
 	p1=*h;
-	while((p1)&&((p1->key)!=n))/* case - didnt find the key in the list */
+	while((p1)&&((p1->key)!=n))/* find the key in the list */
 	{
 		p2=p1;
 		p1=p1->next;
-		if(p2->next==*h)
+		if(p2->next==*h)/* case - didnt find the key in the list */
 			return;
 	}
 	if(p1==(*h))/* case - the key is the head of the list */
@@ -116,11 +115,13 @@ void delete(ptr *h,ptr *tail, int n)
 		(*h)=p1->next;
 		(*tail)->next=(*h);
 		free(p1);
+		count--;
 	}
 	else /* case - the key is the tail or between two nodes */
 	{
 		p2->next=p1->next;
 		free(p1);
+		count--;
 	}
 }
 
